@@ -15,7 +15,7 @@ jobs:
         with:
           path: ~/.npm
           key: ${{ runner.os }}-node-${{ hashFiles('**/package-log.json') }} #Make sure cache is created for OS and current dependencies. If hash of package-log changes, make a new cache.
-          restore-key:
+          restore-keys:
             | #If no cache is found using what is above, use these caches.
             ${{ runner.os }}-node-
       - name: Use NodeJS
