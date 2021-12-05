@@ -50,7 +50,7 @@ jobs:
         if: github.event_name == 'push' && github.ref == 'refs/heads/master' # Only create release when pushing to master
         run: npx semantic-release
         env:
-          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          GITHUB_TOKEN: ${{ secrets.CUSTOM_TOKEN }}
       - name: Deploy to staging
         if: github.event_name == 'push'
         run: npx surge  --project ./build --domain trashy-carpenter.surge.sh #npx will install surge and run task at the same time
