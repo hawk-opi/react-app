@@ -1,9 +1,9 @@
 name: CI
 on:
   pull_request:
-    branches: [develop]
+    branches: [develop, master]
   push:
-    branches: [develop]
+    branches: [develop, master]
 
 jobs:
   build:
@@ -41,6 +41,16 @@ jobs:
         with:
           name: build
           path: build
+      - name: Zip Assets
+        if: github.event_name == 'push' && github.ref == 'refs/heads/master'
+        run: |
+          zip -r build.zip ./build
+          zip -r coverage.zip ./coverage
+      - name: Create a Release
+        if: github.event_name == 'push' && github.ref == 'refs/heads/master' # Only create release when pushing to master
+        run: npx semantic-release
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN}}
       - name: Deploy to staging
         if: github.event_name == 'push'
         run: npx surge  --project ./build --domain trashy-carpenter.surge.sh #npx will install surge and run task at the same time
